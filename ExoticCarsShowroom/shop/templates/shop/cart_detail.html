@@ -1,0 +1,84 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4 neon-title">🛒 თქვენი კალათა</h2>
+    </div>
+</div>
+
+{% if cart_items %}
+<div class="row">
+    <div class="col-lg-9">
+        <div class="glass-card p-4">
+            <div class="table-responsive">
+                <table class="table table-dark table-borderless align-middle mb-0">
+                    <thead>
+                        <tr class="info-label border-bottom border-secondary">
+                            <th scope="col">მანქანა</th>
+                            <th scope="col">ფასი</th>
+                            <th scope="col">რაოდენობა</th>
+                            <th scope="col">ჯამი</th>
+                            <th scope="col">მოქმედება</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr class="border-top border-secondary">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    {% if item.product.image %}
+                                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="width: 80px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 15px; border: 1px solid rgba(212, 175, 55, 0.5);">
+                                    {% endif %}
+                                    <a href="{% url 'product_detail' pk=item.product.pk %}" class="text-white text-decoration-none fw-bold hover-warning">
+                                        {{ item.product.name }}
+                                    </a>
+                                </div>
+                            </td>
+                            <td><span class="text-muted">${{ item.product.price }}</span></td>
+                            <td>
+                                <span class="badge" style="background-color: var(--neon-blue); color: black;">{{ item.quantity }}</span>
+                            </td>
+                            <td class="info-label fw-bold h5">${{ item.total_item_price }}</td>
+                            <td>
+                                <a href="{% url 'remove_from_cart' pk=item.pk %}" class="btn btn-sm btn-outline-danger-custom">
+                                    <i class="fas fa-trash"></i> წაშლა
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3">
+        <div class="glass-card p-4 mt-4 mt-lg-0">
+            <div class="card-header bg-transparent border-bottom border-secondary mb-3 p-0">
+                <h5 class="neon-title">შეკვეთის დეტალები</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-light">სულ თანხა:</span>
+                    <span class="h4 mb-0 info-label">${{ cart_total }}</span>
+                </div>
+                
+                <hr class="border-secondary">
+
+                <button class="btn btn-warning-custom w-100 fw-bold btn-lg mt-3">ყიდვა (Checkout)</button>
+                <a href="{% url 'product_list' %}" class="btn btn-outline-light-custom w-100 mt-2">← კიდევ დამატება</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-5 glass-card mt-5 p-5">
+    <div class="mb-4 info-label" style="font-size: 80px;">🛒</div>
+    <h3 class="neon-title">თქვენი კალათა ცარიელია</h3>
+    <p class="text-muted">აირჩიეთ თქვენი ოცნების მანქანა ჩვენს კატალოგში.</p>
+    <a href="{% url 'product_list' %}" class="btn btn-primary-custom btn-lg mt-3">კატალოგის ნახვა</a>
+</div>
+{% endif %}
+
+{% endblock %}

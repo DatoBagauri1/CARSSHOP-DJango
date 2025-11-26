@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Exotic Cars{% endblock %}</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-gold: #FFD700; /* Bright Gold */
+            --secondary-gold: #DAA520; /* Darker Gold */
+            --neon-blue: #00FFFF; /* Aqua Neon */
+            --dark-bg: #0A0A0A;
+            --glass-bg: rgba(25, 25, 25, 0.7); /* Slightly darker glass */
+            --card-bg: #1A1A1A;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            /* Dynamic, subtle nebula effect */
+            background-image: radial-gradient(circle at 15% 50%, rgba(255,255,255,.05) 0%, transparent 40%),
+                              radial-gradient(circle at 85% 60%, rgba(255,255,255,.05) 0%, transparent 40%),
+                              radial-gradient(circle at 50% 10%, rgba(255,255,255,.03) 0%, transparent 40%),
+                              linear-gradient(to bottom, #050505, #000000);
+            background-size: cover;
+            background-attachment: fixed;
+            color: #E0E0E0; /* Lighter text for contrast */
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--secondary-gold); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-gold); }
+
+        /* Navbar Styling */
+        .navbar {
+            background: rgba(0, 0, 0, 0.9) !important; /* Almost black, more opaque */
+            backdrop-filter: blur(15px); /* Stronger blur */
+            border-bottom: 1px solid rgba(var(--primary-gold), 0.5); /* Gold border */
+            padding: 18px 0; /* More padding */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+        }
+        .navbar-brand {
+            font-family: 'Audiowide', sans-serif; /* Futuristic font */
+            font-weight: 700;
+            letter-spacing: 3px; /* More spacing */
+            color: var(--primary-gold) !important;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.6); /* Gold neon glow */
+            transition: 0.3s;
+        }
+        .navbar-brand:hover {
+            color: var(--neon-blue) !important;
+            text-shadow: 0 0 12px rgba(0, 255, 255, 0.8); /* Blue neon glow on hover */
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important; /* Brighter default */
+            transition: 0.3s ease-in-out;
+            font-weight: 500;
+            position: relative;
+        }
+        .nav-link:hover {
+            color: var(--primary-gold) !important;
+            transform: translateY(-3px); /* More pronounced lift */
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gold);
+            transition: width 0.3s ease-out, left 0.3s ease-out;
+        }
+        .nav-link:hover::after {
+            width: 80%;
+            left: 10%;
+        }
+
+        /* Main Container */
+        .container {
+            flex-grow: 1; /* Allows content to push footer down */
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%); /* Stronger blur and saturation */
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 215, 0, 0.3); /* Gold border */
+            border-radius: 20px; /* More rounded */
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.5); /* Stronger shadow */
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: var(--neon-blue); /* Neon border on hover */
+            box-shadow: 0 12px 50px 0 rgba(0, 255, 255, 0.4); /* Neon shadow on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Product Cards */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-8px); /* Slightly less lift for cards */
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2), 0 0 15px rgba(255, 215, 0, 0.1);
+            border-color: var(--primary-gold);
+        }
+        .card-img-top {
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            height: 180px; /* Fixed height for consistency */
+            object-fit: cover;
+            filter: brightness(0.9); /* Slightly darker image */
+            transition: filter 0.3s ease;
+        }
+        .card:hover .card-img-top {
+            filter: brightness(1); /* Brighten on hover */
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-title {
+            color: var(--primary-gold);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        .card-text {
+            color: #C0C0C0;
+            font-size: 0.95rem;
+        }
+        .product-price {
+            color: var(--neon-blue);
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
+        }
+
+        /* Buttons (Redesigned) */
+        .btn-primary-custom { /* For general use like 'View Details' */
+            background: linear-gradient(90deg, var(--primary-gold), var(--secondary-gold));
+            border: none;
+            color: black;
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        .btn-primary-custom:hover {
+            background: linear-gradient(90deg, var(--secondary-gold), var(--primary-gold));
+            color: black;
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-warning-custom { /* For actions like 'Add to Cart' */
+            background: linear-gradient(90deg, #FF6F00, #FFD700); /* Orange to Gold */
+            border: none;
+            color: black;
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3);
+        }
+        .btn-warning-custom:hover {
+            background: linear-gradient(90deg, #FFD700, #FF6F00);
+            color: black;
+            box-shadow: 0 6px 20px rgba(255, 111, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-danger-custom { /* For 'Logout' */
+            border: 1px solid #FF4500; /* Red-Orange */
+            color: #FF4500;
+            background: transparent;
+            font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-danger-custom:hover {
+            background: #FF4500;
+            color: black;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-light-custom { /* For 'Login' */
+            border: 1px solid #E0E0E0;
+            color: #E0E0E0;
+            background: transparent;
+            font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-light-custom:hover {
+            background: var(--neon-blue);
+            border-color: var(--neon-blue);
+            color: black;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-success-custom { /* For 'Sign Up' */
+            background: linear-gradient(90deg, #28a745, #218838); /* Green gradient */
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+        .btn-success-custom:hover {
+            background: linear-gradient(90deg, #218838, #28a745);
+            color: white;
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Form Input Styling */
+        .form-control-custom {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.08); /* Lighter transparency */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 8px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-control-custom:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); /* Gold glow on focus */
+        }
+        .form-label {
+            color: #C0C0C0;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        /* Global H Tags Neon Style - Enforced */
+    h1, h2, h3, h4, h5, h6, .neon-title {
+    color: var(--primary-gold) !important; /* Enforce Gold color */
+    font-weight: 700 !important;
+    /* Stronger Neon Shadow for maximum contrast */
+    text-shadow: 0 0 7px rgba(255, 215, 0, 0.7), 0 0 15px rgba(255, 215, 0, 0.4);
+    letter-spacing: 1px;
+}
+
+        /* Alerts */
+        .alert {
+            border-radius: 10px;
+            margin-top: 20px;
+            background-color: rgba(var(--bs-alert-bg-rgb), var(--bs-bg-opacity)) !important;
+            border-color: rgba(var(--bs-alert-border-color-rgb), var(--bs-border-opacity)) !important;
+            color: var(--bs-alert-color) !important;
+            backdrop-filter: blur(10px);
+        }
+        .alert-success { background-color: rgba(40, 167, 69, 0.6) !important; border-color: rgba(40, 167, 69, 0.8) !important; color: white !important; }
+        .alert-danger { background-color: rgba(220, 53, 69, 0.6) !important; border-color: rgba(220, 53, 69, 0.8) !important; color: white !important; }
+        .alert-warning { background-color: rgba(255, 193, 7, 0.6) !important; border-color: rgba(255, 193, 7, 0.8) !important; color: #333 !important; }
+        .btn-close { filter: invert(1); } /* Make close button visible on dark alerts */
+
+        footer {
+            margin-top: auto; /* Pushes footer to the bottom */
+            background: #000000;
+            padding: 30px 0;
+            border-top: 1px solid #222;
+            color: #888;
+            font-size: 0.9rem;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <i class="fas fa-car-alt"></i> EXOTIC<span style="color:var(--neon-blue);">CARS</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'product_list' %}">SHOWROOM</a></li>
+                    
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'cart_detail' %}"><i class="fas fa-shopping-cart"></i> CART</a></li>
+                        <li class="nav-item ms-3">
+                            <span class="text-white me-2 fw-bold text-gradient-gold">Hello, {{ user.username }}!</span>
+                        </li>
+                        <li class="nav-item ms-3">
+                            <form action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-outline-danger-custom">LOGOUT</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item ms-3">
+                            <a href="{% url 'login' %}" class="btn btn-sm btn-outline-light-custom">LOGIN</a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a href="{% url 'signup' %}" class="btn btn-sm btn-success-custom">SIGN UP</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div style="height: 100px;"></div> <div class="container mt-5">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2025 Exotic Cars Showroom. Crafted with Precision.</p>
+            <p>
+                <a href="#" class="text-decoration-none text-warning me-3">Privacy Policy</a>
+                <a href="#" class="text-decoration-none text-warning">Terms of Service</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

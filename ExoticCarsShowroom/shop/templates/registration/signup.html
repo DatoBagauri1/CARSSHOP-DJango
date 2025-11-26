@@ -1,0 +1,45 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="glass-card p-5 mt-5">
+            <h2 class="text-center mb-4 text-warning">📝 რეგისტრაცია</h2>
+            <form method="post">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label class="text-light">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-warning w-100 fw-bold mt-3">დარეგისტრირება</button>
+            </form>
+            <p class="mt-3 text-center text-light">უკვე გაქვთ ანგარიში? <a href="{% url 'login' %}" class="text-warning">შესვლა</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* ფორმის ველების სტილი */
+    input {
+        width: 100%;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid #444;
+        color: white;
+        border-radius: 5px;
+    }
+    input:focus {
+        outline: none;
+        border-color: #d4af37;
+        background: rgba(255, 255, 255, 0.2);
+    }
+    ul { list-style: none; padding: 0; color: #ccc; font-size: 0.8rem; }
+</style>
+{% endblock %}
